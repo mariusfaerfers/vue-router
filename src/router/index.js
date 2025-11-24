@@ -8,37 +8,23 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/brazil",
-    name: "brazil",
-    component: () =>
-      import(/* webpackChunkName: "brazil" */ "@/views/BrazilView.vue"),
-  },
-  {
-    path: "/hawaii",
-    name: "hawaii",
-    component: () =>
-      import(/* webpackChunkName: "hawaii" */ "@/views/HawaiiView.vue"),
-  },
-  {
-    path: "/jamaica",
-    name: "jamaica",
-    component: () =>
-      import(/* webpackChunkName: "jamaica" */ "@/views/JamaicaView.vue"),
-  },
-  {
-    path: "/panama",
-    name: "panama",
-    component: () =>
-      import(/* webpackChunkName: "panama" */ "@/views/PanamaView.vue"),
-  },
-  {
-    path: "/destination/:id",
+    path: "/destinations/:id/:slug",
+    name: "destination.show",
     component: () => import("@/views/DestinationShow.vue"),
+    props: (route) => ({ ...route.params, id: parseInt(route.params.id) }),
+    children: [
+      {
+        path: "/destination/:id/:slug/:experienceSlug",
+        name: "experience.show",
+        component: () => import("@/views/ExperienceShow.vue"),
+        props: (route) => ({ ...route.params, id: parseInt(route.params.id) }),
+      },
+    ],
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 
